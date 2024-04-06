@@ -90,10 +90,10 @@ export function LoginSignupPageComponent() {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         console.log("sdc");
-        submitHandler(name,email,password); 
+        await submitHandler(name,email,password); 
       }}
       className="flex flex-col gap-2"
     >
