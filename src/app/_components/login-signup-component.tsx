@@ -60,7 +60,12 @@ export function LoginSignupPageComponent() {
     //   createUser.mutate({name,email,password});
     // }
     if(nameDisabled){
-      loginHandler(email,password);
+      try{
+        loginHandler(email,password);
+      }catch(error){
+        console.log(error);
+      }
+      
     }else{
       try{createUser.mutate({ name, email, password });}
       catch(error){
