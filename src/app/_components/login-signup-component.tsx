@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation'
 import { useState,useEffect } from "react";
-import { string } from "zod";
-
 import { api } from "~/trpc/react";
 interface InputData {
   email: string;
@@ -12,6 +11,7 @@ interface InputData {
 
 export function LoginSignupPageComponent() {
   const router = useRouter();
+  const pathName = usePathname();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,16 +20,12 @@ export function LoginSignupPageComponent() {
     email: '',
     password: '',
   });
-  var pathName="";
   
   useEffect(()=>{
-    if (typeof window !== 'undefined') {
-      pathName=window.location.pathname;
-      if(pathName==="/signup-page"){
-        setNameDisabled(false);
-      }
-      console.log(pathName);
+    if(pathName==="/signup-page"){
+      setNameDisabled(false);
     }
+    console.log(pathName);
   },[]);
   
 
@@ -66,7 +62,10 @@ export function LoginSignupPageComponent() {
     if(nameDisabled){
       loginHandler(email,password);
     }else{
-      createUser.mutate({name,email,password});
+      try{createUser.mutate({ name, email, password });}
+      catch(error){
+        console.log(error);
+      } 
     }
     console.log(pathName);
   }

@@ -18,7 +18,7 @@ export function CategoriesTable() {
   const [currentPage,setCurrentPage] = useState(1);
   const categories = api.category.getCategories.useQuery();
   const ITEMS_PER_PAGE=10;
-  var totalNumberOfCategories = categories.data?.length;
+  let totalNumberOfCategories = categories.data?.length;
   
   const [pageCategories, setPageCategories] = useState<(Category | undefined)[]>([]);
 //   function populateCategories(){
