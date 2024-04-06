@@ -53,7 +53,7 @@ export function LoginSignupPageComponent() {
     //   email: "",
     //   password: ""
     // };
-  function submitHandler(name:string,email:string,password:string){
+  async function submitHandler(name:string,email:string,password:string){
     // if(pathName==="/"){
     //   loginHandler(email,password);
     // }else if(pathName==="/signup-page"){
@@ -61,7 +61,7 @@ export function LoginSignupPageComponent() {
     // }
     if(nameDisabled){
       try{
-        loginHandler(email,password);
+        await loginHandler(email,password);
       }catch(error){
         console.log(error);
       }
