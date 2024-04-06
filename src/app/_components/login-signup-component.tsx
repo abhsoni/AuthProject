@@ -37,35 +37,14 @@ export function LoginSignupPageComponent() {
       router.push('/verifyemail-page');
     },
   });
-  // const login = api.auth.login.useQuery({email,password});
-    // const [categoryName, setCategoryName] = useState("");
-    // const createCategory = api.category.createCategory.useMutation({
-    //     onSuccess: () => {
-    //       router.refresh();
-    //       setCategoryName("");
-    //     },
-    // });
-    // type InputData = {
-    //   email: string;
-    //   password: string;
-    // };
-    // var inputData: InputData = {
-    //   email: "",
-    //   password: ""
-    // };
+
   async function submitHandler(name:string,email:string,password:string){
-    // if(pathName==="/"){
-    //   loginHandler(email,password);
-    // }else if(pathName==="/signup-page"){
-    //   createUser.mutate({name,email,password});
-    // }
     if(nameDisabled){
       try{
         await loginHandler(email,password);
       }catch(error){
         console.log(error);
-      }
-      
+      } 
     }else{
       try{createUser.mutate({ name, email, password });}
       catch(error){
@@ -74,19 +53,21 @@ export function LoginSignupPageComponent() {
     }
     console.log(pathName);
   }
-    async function loginHandler(email:string,password:string){
-      setInputData({ ...inputData, email: email,password: password });
-      // setInputData({ ...inputData, password: password });
-      // inputData={email:email,password:password};
-      const userLogin=await login.refetch();
-      if(userLogin){
-        if(userLogin.isSuccess){
-          router.push("/categories-page");
-        }
-      }
-      // console.log(inputData);
+  async function loginHandler(email:string,password:string){
+    if(email==="" || password===""){
+      return;
     }
-    const login = api.auth.login.useQuery(inputData);
+    setInputData({ ...inputData, email: email,password: password });
+    const userLogin=await login.refetch();
+    if(userLogin){
+      if(userLogin.isSuccess){
+        const result=userLogin.data;
+        console.log(result);
+        router.push("/categories-page");
+      }
+    }
+  }
+  const login = api.auth.login.useQuery(inputData);
 
   return (
     <form
