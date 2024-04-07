@@ -44,7 +44,7 @@ export function LoginSignupPageComponent() {
     <div className="container">
       <div>Invalid credentials.</div>
       <div>- Invalid email or password.</div>
-      <div>- Email should contain '@'.</div>
+      <div>- Email should contain &apos;@&apos;.</div>
       <div>- Password must be atleast 8 characters long.</div>
     </div>
   );
@@ -76,7 +76,7 @@ export function LoginSignupPageComponent() {
     if(userLogin.isSuccess){
       router.push("/categories-page");
     }else if(userLogin.isError){
-      let err="Code:"+userLogin.error.data?.httpStatus+"; Message:"+userLogin.error.message;
+      const err="Code:"+userLogin.error.data?.httpStatus+"; Message:"+userLogin.error.message;
 
       setErrorMessage(err?err:"");
     }
