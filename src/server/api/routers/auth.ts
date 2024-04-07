@@ -28,15 +28,16 @@ export const authRouter = createTRPCRouter({
 
   login: publicProcedure.input(z.object({email:z.string(),password:z.string()})).query(async ({ ctx,input }) => {
     if(input.email==="" || input.password===""){
-      return {message:"Inputs are invalid!"};
+      throw new TRPCError({code:'BAD_REQUEST',message:"Invalid input"});
     }
+    
     const token = jwt.sign({ email: input.email, password: input.password }, "mysecret", { expiresIn: '1h' });
     return ctx.db.user.findFirst({where:{
         email:input.email,
         password:input.password
       }}).then((user)=>{
         if(!user){
-          return new TRPCError({ code: 'UNAUTHORIZED' });;
+          return new TRPCError({ code: 'UNAUTHORIZED',message:"User not found." });;
         }
         return {token:token,userId:user.id};
       }).catch((e)=>{console.log(e);});;

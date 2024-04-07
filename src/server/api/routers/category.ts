@@ -45,7 +45,7 @@ export const categoryRouter = createTRPCRouter({
     // try {
     //   decodedToken = jwt.verify(token?token:"", "omnamahshivaay");
     // } catch {
-    //   throw new TRPCError({ message:"Token not validated! Token maybe tempered!",code: 'UNAUTHORIZED' });;
+    //   throw new TRPCError({ message:"Token not verified!",code: 'UNAUTHORIZED' });;
     // }
     // if (!decodedToken) {
     //   throw new TRPCError({ message:"Decoded token is not valid!",code: 'UNAUTHORIZED' });;

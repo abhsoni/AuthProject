@@ -1,5 +1,6 @@
 "use client";
 
+import { TRPCError } from "@trpc/server";
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation'
 import { useState,useEffect } from "react";
@@ -16,10 +17,12 @@ export function LoginSignupPageComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nameDisabled,setNameDisabled]= useState(true);
+  const [inputError,setInputError]=useState(false);
   const [inputData, setInputData] = useState<InputData>({
     email: '',
     password: '',
   });
+  const [errorMessage,setErrorMessage]=useState("");
   
   useEffect(()=>{
     if(pathName==="/signup-page"){
@@ -37,9 +40,22 @@ export function LoginSignupPageComponent() {
       router.push('/verifyemail-page');
     },
   });
+  const INPUT_ERROR_MESSAGE=(
+    <div className="container">
+      <div>Invalid credentials.</div>
+      <div>- Invalid email or password.</div>
+      <div>- Email should contain '@'.</div>
+      <div>- Password must be atleast 8 characters long.</div>
+    </div>
+  );
 
   async function submitHandler(name:string,email:string,password:string){
-    if(nameDisabled){
+    if(email==="" || email.length<4 || password==="" || password.length<8){
+      setInputError(true);
+      return;
+    }
+    setInputError(false);
+    if(nameDisabled && inputError===false){
       try{
         await loginHandler(email,password);
       }catch(error){
@@ -54,18 +70,26 @@ export function LoginSignupPageComponent() {
     console.log(pathName);
   }
   async function loginHandler(email:string,password:string){
-    if(email==="" || password===""){
-      return;
-    }
     setInputData({ ...inputData, email: email,password: password });
     const userLogin=await login.refetch();
-    if(userLogin){
-      if(userLogin.isSuccess){
-        const result=userLogin.data;
-        console.log(result);
-        router.push("/categories-page");
-      }
+    console.log(userLogin.data);
+    if(userLogin.isSuccess){
+      router.push("/categories-page");
+    }else if(userLogin.isError){
+      let err="Code:"+userLogin.error.data?.httpStatus+"; Message:"+userLogin.error.message;
+
+      setErrorMessage(err?err:"");
     }
+    // if(userLogin.data){
+    //   console.log(typeof(userLogin.data));
+    // }
+    // if(typeof(userLogin.data)){
+    //   if(userLogin.data){
+    //     const result=userLogin.data;
+    //     // console.log(result);
+    //    // router.push("/categories-page");
+    //   }
+    // }
   }
   const login = api.auth.login.useQuery(inputData);
 
@@ -87,7 +111,7 @@ export function LoginSignupPageComponent() {
         className="w-full rounded-full px-4 py-2 text-black"
       />
       <input
-        type="text"
+        type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -100,6 +124,8 @@ export function LoginSignupPageComponent() {
         onChange={(e) => setPassword(e.target.value)}
         className="w-full rounded-full px-4 py-2 text-black"
       />
+      <div>{inputError?INPUT_ERROR_MESSAGE:<div></div>}</div>
+      <div>{errorMessage}</div>
       <button
         type="submit"
         className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
