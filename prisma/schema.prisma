@@ -24,7 +24,7 @@ model Category {
     categoryName      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    users     User[]   
+    users     User[]  
     @@index([categoryName])
 }
 
@@ -35,6 +35,6 @@ model User {
     password  String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    userCategories Category[]
+    categories Category[]
     @@index([name])
 }

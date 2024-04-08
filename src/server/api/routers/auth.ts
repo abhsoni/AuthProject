@@ -25,6 +25,15 @@ export const authRouter = createTRPCRouter({
         },
       });
     }),
+  
+  getUserByID:publicProcedure.input(z.object({ userID: z.string().min(1)})).query(({ctx,input})=>{
+    return ctx.db.user.findUnique({where:{id:parseInt(input.userID)},select: {name:true,id:true},}).then((user)=>{
+      if(!user){
+        return new TRPCError({ code: 'UNAUTHORIZED',message:"User not found." });;
+      }
+      return user;
+    })
+  }),
 
   login: publicProcedure.input(z.object({email:z.string(),password:z.string()})).query(async ({ ctx,input }) => {
     if(input.email==="" || input.password===""){

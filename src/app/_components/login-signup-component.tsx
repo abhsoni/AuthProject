@@ -5,10 +5,15 @@ import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation'
 import { useState,useEffect } from "react";
 import { api } from "~/trpc/react";
+interface AuthResponse {
+  token: string;
+  userId: number;
+}
 interface InputData {
   email: string;
   password: string;
 }
+
 
 export function LoginSignupPageComponent() {
   const router = useRouter();
@@ -69,11 +74,22 @@ export function LoginSignupPageComponent() {
     }
     console.log(pathName);
   }
+  let authData:AuthResponse;
   async function loginHandler(email:string,password:string){
     setInputData({ ...inputData, email: email,password: password });
     const userLogin=await login.refetch();
     console.log(userLogin.data);
     if(userLogin.isSuccess){
+      let resultData=userLogin.data;
+      if(resultData){
+        if("token" in resultData){
+          localStorage.setItem("token",resultData.token);
+        }
+        if("userId" in resultData){
+          localStorage.setItem("userId",resultData.userId.toString());
+        }
+      }
+      // localStorage.setItem("userID",userLogin.data?.userID)
       router.push("/categories-page");
     }else if(userLogin.isError){
       const err="Code:"+userLogin.error.data?.httpStatus+"; Message:"+userLogin.error.message;
