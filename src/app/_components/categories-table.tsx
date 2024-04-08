@@ -65,7 +65,7 @@ export function CategoriesTable() {
     return;
   }
   function checkHandler(e:ChangeEvent<HTMLInputElement>){
-    let categoryID=e.target.value;
+    // let categoryID=e.target.value;
     // let user = 
     // console.log(categoryID);
   }

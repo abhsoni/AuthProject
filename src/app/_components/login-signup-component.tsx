@@ -80,7 +80,7 @@ export function LoginSignupPageComponent() {
     const userLogin=await login.refetch();
     console.log(userLogin.data);
     if(userLogin.isSuccess){
-      let resultData=userLogin.data;
+      const resultData=userLogin.data;
       if(resultData){
         if("token" in resultData){
           localStorage.setItem("token",resultData.token);
