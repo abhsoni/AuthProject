@@ -37,10 +37,12 @@ export function CategoriesTable() {
     //   router.refresh();
     //   return;
     // }
-    if(!localStorage.getItem("userId") || !localStorage.getItem("token")){
-      router.push("/");
-      router.refresh();
-      return;
+    if(typeof window !== 'undefined'){
+      if(!localStorage.getItem("userId") || !localStorage.getItem("token")){
+        router.push("/");
+        router.refresh();
+        return;
+      }
     }
     // console.log(user.data?.name);
 

@@ -7,8 +7,10 @@ import { CategoriesTable } from "~/app/_components/categories-table";
 export default function CategoriesPage() {
     const router = useRouter();
     function logoutHandler(){
-        localStorage.removeItem('userId');
-        localStorage.removeItem('token');
+        if(typeof window !== 'undefined'){
+            localStorage.removeItem('userId');
+            localStorage.removeItem('token');
+        }
         router.push("/");
         router.refresh();
         return console.log(localStorage.getItem("userId"));
