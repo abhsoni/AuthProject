@@ -30,19 +30,6 @@ export function CategoriesTable() {
   const indexOfLastRecord = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstRecord = indexOfLastRecord - ITEMS_PER_PAGE;
   let userCategories:Category[];
-  const fetchUserData = useMemo(() => () => {
-    if (savedUserID) {
-      let fecthedUser = api.auth.getUserByID.useQuery({userID: savedUserID});
-      // api.auth.getUserByID.useQuery({userID: savedUserID}).then(userData => {
-      //   setUser(userData.data);
-      // }).catch(error => {
-      //   console.error("Error fetching user data:", error);
-      // });
-    } else {
-      router.push("/");
-      router.refresh();
-    }
-  }, [savedUserID, router]);
   useEffect(()=>{
     // user.refetch();
     // if(!user.data?.name){
