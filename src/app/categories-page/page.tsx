@@ -1,18 +1,25 @@
 "use client"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { CategoriesTable } from "~/app/_components/categories-table";
 
 
 export default function CategoriesPage() {
+    const [logout,setLogout]=useState(false);
     const router = useRouter();
-    function logoutHandler(){
-        if(typeof window !== 'undefined'){
-            localStorage.removeItem('userId');
-            localStorage.removeItem('token');
+    useEffect(()=>{
+        if(logout){
+            if(typeof window !== 'undefined'){
+                localStorage.removeItem('userId');
+                localStorage.removeItem('token');
+            }
+            router.push("/");
+            router.refresh();
         }
-        router.push("/");
-        router.refresh();
+    },[logout]);
+    function logoutHandler(){
+        setLogout(true);
         return ;
     }
     return (
