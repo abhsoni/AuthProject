@@ -35,9 +35,11 @@ export function CategoriesTable() {
   const userCat = api.auth.updateUserCategories.useMutation({
     onSuccess: () => {
       console.log("success");
-      // router.refresh();
-      // setName("");
-      user.refetch();
+      try{
+        user.refetch();
+      }catch(error){
+        console.log(error);
+      }
       if (user.data && ("categories" in user.data)) {
         setUserSelectedCategories(user.data.categories);
       }
@@ -47,8 +49,6 @@ export function CategoriesTable() {
   });
   const indexOfLastRecord = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstRecord = indexOfLastRecord - ITEMS_PER_PAGE;
-  let userCategories:Category[]=[];
-  let numOfUserSSelecteted=0;
   useEffect( ()=>{
     // user.refetch();
     // if(!user.data?.name){
@@ -102,7 +102,7 @@ export function CategoriesTable() {
     
     
     console.log(e.target.value);
-    let userID=localStorage.getItem("userId");
+    const userID=localStorage.getItem("userId");
     if(userID){
       userCat.mutate({userID,categoryId:parseInt(e.target.value)});
     }

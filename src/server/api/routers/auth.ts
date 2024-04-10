@@ -45,7 +45,7 @@ export const authRouter = createTRPCRouter({
 
     try {
       // Check if the user exists
-      let user = await ctx.db.user.findUnique({
+      const user = await ctx.db.user.findUnique({
         where: { id: parseInt(input.userID) },
         select:{categories:true,name:true,email:true}
       });
