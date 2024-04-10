@@ -33,13 +33,11 @@ export function CategoriesTable() {
   const user = api.auth.getUserByID.useQuery({userID:savedUserID?savedUserID:""});
   
   const userCat = api.auth.updateUserCategories.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       console.log("success");
-      try{
-        user.refetch();
-      }catch(error){
-        console.log(error);
-      }
+      
+      await user.refetch();
+      
       if (user.data && ("categories" in user.data)) {
         setUserSelectedCategories(user.data.categories);
       }
