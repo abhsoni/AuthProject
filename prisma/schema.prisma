@@ -21,10 +21,9 @@ model Post {
 
 model Category {
     id        Int      @id @default(autoincrement())
-    categoryName      String
+    categoryName      String     
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    users     User[]  
+    updatedAt DateTime @updatedAt 
     @@index([categoryName])
 }
 
@@ -35,6 +34,6 @@ model User {
     password  String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    categories Category[]
+    categories Int[]
     @@index([name])
 }

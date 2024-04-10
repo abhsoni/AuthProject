@@ -3,6 +3,7 @@
 import { TRPCError } from "@trpc/server";
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation'
+import {trpc} from "../../utils/trpc";
 import { useState,useEffect } from "react";
 import { api } from "~/trpc/react";
 interface AuthResponse {
@@ -45,6 +46,12 @@ export function LoginSignupPageComponent() {
       router.push('/verifyemail-page');
     },
   });
+  type Category = {
+    id: number
+    categoryName: string
+    createdAt: Date
+    updatedAt: Date
+  }
   const INPUT_ERROR_MESSAGE=(
     <div className="container">
       <div>Invalid credentials.</div>
@@ -67,6 +74,7 @@ export function LoginSignupPageComponent() {
         console.log(error);
       } 
     }else{
+      const categories:[]=[];
       try{createUser.mutate({ name, email, password });}
       catch(error){
         console.log(error);
@@ -108,6 +116,7 @@ export function LoginSignupPageComponent() {
     // }
   }
   const login = api.auth.login.useQuery(inputData);
+  const helloWithArgsQuery = trpc.helloWithArgs.useQuery;
 
   return (
     <form
