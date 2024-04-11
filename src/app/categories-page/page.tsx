@@ -11,8 +11,8 @@ export default function CategoriesPage() {
     useEffect(()=>{
         if(logout){
             if(typeof window !== 'undefined'){
-                // localStorage.removeItem('userId');
-                // localStorage.removeItem('token');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('token');
             }
             router.push("/");
             router.refresh();
