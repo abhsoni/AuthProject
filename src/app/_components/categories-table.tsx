@@ -64,7 +64,7 @@ export function CategoriesTable() {
         return;
       }
       const savedUserID = localStorage.getItem("userId")?.toString();
-      setLoginedUserId(savedUserID || "");
+      setLoginedUserId(savedUserID?savedUserID: "");
     }
     if (user.data && ("categories" in user.data)) {
       setUserSelectedCategories(user.data.categories);
