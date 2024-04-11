@@ -23,14 +23,15 @@ export function CategoriesTable() {
   const [name, setName] = useState("");
   const [currentPage,setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
+  const [loginedUsedId, setLoginedUserId] = useState("");
   const [userSelectedCategories, setUserSelectedCategories] = useState<number[]>([]);
   const fetchCategories = api.category.getCategories.useQuery();
   const ITEMS_PER_PAGE=10;
   const totalNumberOfCategories = fetchCategories.data?.length;
   
   const [pageCategories, setPageCategories] = useState<(Category | undefined)[]>([]);
-  const savedUserID = "23";
-  const user = api.auth.getUserByID.useQuery({userID:savedUserID?savedUserID:""});
+  
+  const user = api.auth.getUserByID.useQuery({userID:loginedUsedId?loginedUsedId:""});
   
   const userCat = api.auth.updateUserCategories.useMutation({
     onSuccess: async () => {
@@ -62,6 +63,8 @@ export function CategoriesTable() {
         router.refresh();
         return;
       }
+      const savedUserID = localStorage.getItem("userId")?.toString();
+      setLoginedUserId(savedUserID || "");
     }
     if (user.data && ("categories" in user.data)) {
       setUserSelectedCategories(user.data.categories);
@@ -100,8 +103,7 @@ export function CategoriesTable() {
     
     
     console.log(e.target.value);
-    // const userID=localStorage.getItem("userId");
-    const userID="23";
+    const userID=localStorage.getItem("userId");
     if(userID){
       userCat.mutate({userID,categoryId:parseInt(e.target.value)});
     }
