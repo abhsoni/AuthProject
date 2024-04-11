@@ -29,7 +29,7 @@ export function CategoriesTable() {
   const totalNumberOfCategories = fetchCategories.data?.length;
   
   const [pageCategories, setPageCategories] = useState<(Category | undefined)[]>([]);
-  const savedUserID = localStorage.getItem("userId")?.toString();
+  const savedUserID ="23";
   const user = api.auth.getUserByID.useQuery({userID:savedUserID?savedUserID:""});
   
   const userCat = api.auth.updateUserCategories.useMutation({
@@ -56,13 +56,13 @@ export function CategoriesTable() {
     // }
     
     
-    if(typeof window !== 'undefined'){
-      if(!localStorage.getItem("userId") || !localStorage.getItem("token")){
-        router.push("/");
-        router.refresh();
-        return;
-      }
-    }
+    // if(typeof window !== 'undefined'){
+    //   if(!localStorage.getItem("userId") || !localStorage.getItem("token")){
+    //     router.push("/");
+    //     router.refresh();
+    //     return;
+    //   }
+    // }
     if (user.data && ("categories" in user.data)) {
       setUserSelectedCategories(user.data.categories);
     }
@@ -100,7 +100,7 @@ export function CategoriesTable() {
     
     
     console.log(e.target.value);
-    const userID=localStorage.getItem("userId");
+    const userID="23";
     if(userID){
       userCat.mutate({userID,categoryId:parseInt(e.target.value)});
     }
