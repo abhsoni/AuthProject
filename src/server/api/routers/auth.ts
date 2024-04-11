@@ -67,12 +67,10 @@ export const authRouter = createTRPCRouter({
       }
       console.log(JSON.stringify(updatedCategories));
       // Update the user's categories
-      await ctx.db.user.update({
+      return await ctx.db.user.update({
         where: { id: parseInt(input.userID) },
-        data: { name:"Maharaj",categories:{set: updatedCategories.map(category => (category)),} },
+        data: { categories:{set: updatedCategories.map(category => (category)),} },
       });
-
-      return updatedCategories; // Successfully updated user categories
     } catch (error) {
       console.log(error);
       throw new TRPCError({
