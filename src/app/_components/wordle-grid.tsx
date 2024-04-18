@@ -32,7 +32,11 @@ function WordleGrid() {
             }
             if(ev.key==="Enter"){
                 //submitGuessHandler
-                submitGuessHandler();
+                try{
+                    submitGuessHandler();
+                }catch(error){
+                    console.log(error);
+                } 
                 // return console.log("Enter pressed!");
             }
             if(!(/^[a-zA-Z]$/.test(ev.key))){
@@ -180,17 +184,17 @@ function WordleGrid() {
             }
             // ShadeKeyBoard
             const delay = 300 * i;
-            setTimeout(async ()=> {
+            setTimeout(()=> {
                 //shade box
                 console.log(letterBox?.textContent);
                 if(letterBox && letterBox?.textContent){
-                    await shadeKeyBoard(letterBox?.textContent,letterColor);
+                    shadeKeyBoard(letterBox?.textContent,letterColor);
                 }  
             }, delay)
         }
         return;
     }
-    async function shadeKeyBoard(letter: string, color: string): Promise<void> {
+    function shadeKeyBoard(letter: string, color: string){
         // console.log("from shadeKeyBoard------------");
         // console.log(letter);
         // console.log(color);
