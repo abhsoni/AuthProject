@@ -187,7 +187,7 @@ function WordleGrid() {
             setTimeout(()=> {
                 //shade box
                 console.log(letterBox?.textContent);
-                if(letterBox && letterBox?.textContent){
+                if(letterBox?.textContent){
                     shadeKeyBoard(letterBox.textContent,letterColor);
                 }  
             }, delay)
