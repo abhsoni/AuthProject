@@ -6,15 +6,15 @@ import PopupComponent from "./popup-component";
 function WordleGrid() {
     const NumOfGuesses=[1,2,3,4,5,6];
     const NumOfLetter=[1,2,3,4,5];
-    let currentGuessNo:number=1;
-    let nextLetter:number=1;
+    let currentGuessNo=1;
+    let nextLetter=1;
     let currentGuessString="";
     let totalWords:string[]=[];
     const [onStart,setOnStart]=useState(false);
     const [onPause,setOnPause]=useState(false);
     const [onReset,setOnReset]=useState(false);
     const [startGame,setStartGame]=useState(false);
-    let isGameStarted:boolean=false;
+    let isGameStarted=false;
     const [message1,setMessage1]=useState("");
     const [message2,setMessage2]=useState("");
     const [showRestartGameBtn,setShowRestartGameBtn]=useState(false);
@@ -46,8 +46,8 @@ function WordleGrid() {
             if(nextLetter===1){
                 return;
             }else{
-                let divEle=document.getElementsByClassName("letter-row")[currentGuessNo-1];
-                let box=divEle?.children[nextLetter-2];
+                const divEle=document.getElementsByClassName("letter-row")[currentGuessNo-1];
+                const box=divEle?.children[nextLetter-2];
                 if(box){
                     box.textContent="";
                     currentGuessString=currentGuessString.substring(0,nextLetter-2);
@@ -56,11 +56,15 @@ function WordleGrid() {
                 return ;
             }
         }
-        const submitGuessHandler=()=>{
+        const submitGuessHandler=async ()=>{
             if(currentGuessString.length<5){
                 return alert("Bro, please enter whole word!");
             }else{
-                checkWordHandler(currentGuessString);
+                try{
+                    await checkWordHandler(currentGuessString);
+                }catch(error){
+                    console.log(error);
+                }
             }
 
         }
@@ -69,8 +73,8 @@ function WordleGrid() {
             if(nextLetter===6){
                 return ;
             }else{
-                let divEle=document.getElementsByClassName("letter-row")[currentGuessNo-1];
-                let box=divEle?.children[nextLetter-1];
+                const divEle=document.getElementsByClassName("letter-row")[currentGuessNo-1];
+                const box=divEle?.children[nextLetter-1];
                 if(box){
                     box.textContent=key;
                     currentGuessString+=key;
@@ -112,8 +116,8 @@ function WordleGrid() {
                 setOnPause(true);
                 setOnStart(false);
                 setShowRestartGameBtn(true);
-                let correctAnswer = sessionStorage.getItem("answer");
-                let message2="Correct answer is: "+correctAnswer;
+                const correctAnswer = sessionStorage.getItem("answer");
+                const message2="Correct answer is: "+correctAnswer;
                 setMessage1("Game over!");
                 setMessage2(message2);
                 setIsPopupVisible(true);
@@ -124,7 +128,7 @@ function WordleGrid() {
             }
             return ;
         }else{
-            let divEle=document.getElementsByClassName("letter-row")[currentGuessNo-1];
+            const divEle=document.getElementsByClassName("letter-row")[currentGuessNo-1];
             if(divEle){
                 divEle.className=divEle.className+" text-red-500";
                 const timeout=setTimeout(() => {
@@ -137,13 +141,13 @@ function WordleGrid() {
     };
     const colorWordHandler = async (rowNo:number) => {
         // Get the current row element based on the guess number
-        let rowElement = document.getElementsByClassName("letter-row")[rowNo - 1];
+        const rowElement = document.getElementsByClassName("letter-row")[rowNo - 1];
         
         // Get the correct answer from sessionStorage
-        let correctAnswer = sessionStorage.getItem("answer");
+        const correctAnswer = sessionStorage.getItem("answer");
     
         // Get a copy of the answer to manipulate
-        let tempAnswer = correctAnswer ? correctAnswer.split('') : [];
+        const tempAnswer = correctAnswer ? correctAnswer.split('') : [];
     
         // Loop through each letter in the row
         for (let i = 0; i < 5; i++) {
@@ -151,7 +155,7 @@ function WordleGrid() {
             let letterColor = "";
     
             // Get the current letter box element
-            let letterBox = rowElement?.children[i];
+            const letterBox = rowElement?.children[i];
     
             // Find the position of the guessed letter in the correct answer
             const letterPosition = tempAnswer?.indexOf(currentGuessString.charAt(i));
@@ -175,7 +179,7 @@ function WordleGrid() {
                 tempAnswer[letterPosition] = '#';
             }
             // ShadeKeyBoard
-            let delay = 300 * i;
+            const delay = 300 * i;
             setTimeout(async ()=> {
                 //shade box
                 console.log(letterBox?.textContent);
@@ -184,6 +188,7 @@ function WordleGrid() {
                 }  
             }, delay)
         }
+        return;
     }
     async function shadeKeyBoard(letter: string, color: string): Promise<void> {
         // console.log("from shadeKeyBoard------------");
@@ -192,10 +197,10 @@ function WordleGrid() {
         const elements = document.getElementsByClassName("keyboard-button") as HTMLCollectionOf<HTMLElement>;
         for (const elem of elements) {
             if (elem.textContent === letter) {
-                let oldColor = elem.style.color;
-                console.log(elem.className);
-                console.log(oldColor);
-                console.log(color);
+                // let oldColor = elem.style.color;
+                // console.log(elem.className);
+                // console.log(oldColor);
+                // console.log(color);
                 if (elem.className === 'keyboard-button text-green-500') {
                     return;
                 }
@@ -221,7 +226,7 @@ function WordleGrid() {
             const words = text.split('\n').filter(word => word.length === 5);
             const randomIndex = Math.floor(Math.random() * words.length);
             console.log(words[randomIndex]);
-            let answer=words[randomIndex];
+            const answer=words[randomIndex];
             if(words && answer!==undefined){
                 totalWords=words;
                 sessionStorage.setItem('totalWords', JSON.stringify(words));
