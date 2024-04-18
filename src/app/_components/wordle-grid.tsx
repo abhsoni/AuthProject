@@ -22,7 +22,7 @@ function WordleGrid() {
  
     
     useEffect(() => {
-        const handleKeyPress = ( ev: KeyboardEvent) => {
+        const handleKeyPress = async ( ev: KeyboardEvent) => {
             console.log("Key pressed:"+ev.key);
             if(!isGameStarted){return;}
             if(ev.key==="Backspace"){
@@ -33,7 +33,7 @@ function WordleGrid() {
             if(ev.key==="Enter"){
                 //submitGuessHandler
                 try{
-                    submitGuessHandler();
+                    await submitGuessHandler();
                 }catch(error){
                     console.log(error);
                 } 
@@ -188,7 +188,7 @@ function WordleGrid() {
                 //shade box
                 console.log(letterBox?.textContent);
                 if(letterBox && letterBox?.textContent){
-                    shadeKeyBoard(letterBox?.textContent,letterColor);
+                    shadeKeyBoard(letterBox.textContent,letterColor);
                 }  
             }, delay)
         }
