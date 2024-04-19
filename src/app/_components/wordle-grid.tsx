@@ -169,7 +169,7 @@ function WordleGrid() {
             }
         }
     };
-    const colorWordHandler = async (rowNo:number) => {
+    const colorWordHandler = (rowNo:number) => {
         // Get the current row element based on the guess number
         const rowElement = document.getElementsByClassName("letter-row")[rowNo - 1];
         
