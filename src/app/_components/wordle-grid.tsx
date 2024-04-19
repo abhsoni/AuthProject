@@ -1,5 +1,6 @@
 "use client"
-import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import type { KeyboardEvent } from "react";
 import TimerComponent from "../_components/timer-component";
 import PopupComponent from "./popup-component";
 
@@ -22,7 +23,7 @@ function WordleGrid() {
  
     
     useEffect(() => {
-        const handleKeyPress = async ( ev: KeyboardEvent) => {
+        const handleKeyPress = ( ev: KeyboardEvent) => {
             console.log("Key pressed:"+ev.key);
             if(!isGameStarted){return;}
             if(ev.key==="Backspace"){
@@ -33,7 +34,7 @@ function WordleGrid() {
             if(ev.key==="Enter"){
                 //submitGuessHandler
                 try{
-                    await submitGuessHandler();
+                    submitGuessHandler();
                 }catch(error){
                     console.log(error);
                 } 
@@ -60,12 +61,12 @@ function WordleGrid() {
                 return ;
             }
         }
-        const submitGuessHandler=async ()=>{
+        const submitGuessHandler= ()=>{
             if(currentGuessString.length<5){
                 return alert("Bro, please enter whole word!");
             }else{
                 try{
-                    await checkWordHandler(currentGuessString);
+                    checkWordHandler(currentGuessString);
                 }catch(error){
                     console.log(error);
                 }
@@ -92,20 +93,45 @@ function WordleGrid() {
 
         }
         const clearSessioStorage=()=>{sessionStorage.clear();}
+        // const handleKeyboardClick = (e: MouseEvent) => {
+        //     const target = e.target as HTMLElement;
+        //     console.log("From handleKeyboardClick");
+        //     if (!target.classList.contains("keyboard-button")) {
+        //         return;
+        //     }
+        //     console.log(target.classList);
+        //     let key = target.textContent || '';
+        
+        //     if (key === "Del") {
+        //         key = "Backspace";
+        //     } 
+        //     console.log(key);
+        //     const event = new KeyboardEvent("keydown", { key: key });
+        //     document.dispatchEvent(event);
+        // };
+
+        // const keyboardContainer = document.getElementById("keyboard-cont");
+        // if (keyboardContainer) {
+        //     keyboardContainer.addEventListener("click", handleKeyboardClick);
+        // }
         window.addEventListener("keydown", handleKeyPress as unknown as EventListener);
         window.addEventListener("beforeunload",clearSessioStorage as unknown as EventListener);
 
         return () => {
             window.removeEventListener("keydown", handleKeyPress as unknown as EventListener);
+            // window.removeEventListener("click", handleKeyboardClick as unknown as EventListener);
+            // if (keyboardContainer) {
+            //     keyboardContainer.removeEventListener("click", handleKeyboardClick);
+            // }
         };
     }, []);
-    const checkWordHandler= async (word:string)=>{
+    const checkWordHandler= (word:string)=>{
         console.log(totalWords.length);
         const answer = typeof window !== 'undefined' ? sessionStorage.getItem('answer') : null;
         if(word===answer){
             setOnStart(false);
             setOnPause(true);
-            await colorWordHandler(currentGuessNo);
+            colorWordHandler(currentGuessNo);
             setMessage1("Congratulations!");
             setMessage2("You won!");
             setIsPopupVisible(true);
@@ -114,7 +140,7 @@ function WordleGrid() {
         if(totalWords.includes(word)){
 
             console.log(totalWords.length);
-            await colorWordHandler(currentGuessNo);
+            colorWordHandler(currentGuessNo);
             if(currentGuessNo===6){
                 isGameStarted=false;
                 setOnPause(true);
@@ -258,6 +284,7 @@ function WordleGrid() {
     const restartGameHandler=()=>{
         window.location.reload();
     }
+    
   return (
     <div className="flex flex-col justify-center" >
         <PopupComponent onClose={handleClosePopup} isPopupVisible={isPopupVisible} message1={message1} message2={message2}/>
