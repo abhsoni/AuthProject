@@ -101,7 +101,7 @@ function WordleGrid() {
             }
             // console.log(target.classList);
             
-            let key = target.textContent || '';
+            let key = target.textContent?? '';
             if (key === "Del") {
                 key = "Backspace";
             } 
