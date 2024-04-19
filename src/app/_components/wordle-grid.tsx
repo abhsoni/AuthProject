@@ -93,36 +93,35 @@ function WordleGrid() {
 
         }
         const clearSessioStorage=()=>{sessionStorage.clear();}
-        // const handleKeyboardClick = (e: MouseEvent) => {
-        //     const target = e.target as HTMLElement;
-        //     console.log("From handleKeyboardClick");
-        //     if (!target.classList.contains("keyboard-button")) {
-        //         return;
-        //     }
-        //     console.log(target.classList);
-        //     let key = target.textContent || '';
-        
-        //     if (key === "Del") {
-        //         key = "Backspace";
-        //     } 
-        //     console.log(key);
-        //     const event = new KeyboardEvent("keydown", { key: key });
-        //     document.dispatchEvent(event);
-        // };
+        const handleKeyboardClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            console.log("From handleKeyboardClick" );
+            if (!target.classList.contains("keyboard-button")) {
+                return;
+            }
+            // console.log(target.classList);
+            
+            let key = target.textContent || '';
+            if (key === "Del") {
+                key = "Backspace";
+            } 
+            // console.log(key);
+            const event = new KeyboardEvent("keydown", { key: key });
+            window.dispatchEvent(event);
+        };
 
-        // const keyboardContainer = document.getElementById("keyboard-cont");
-        // if (keyboardContainer) {
-        //     keyboardContainer.addEventListener("click", handleKeyboardClick);
-        // }
+        const keyboardContainer = document.getElementById("keyboard-cont");
+        if (keyboardContainer) {
+            keyboardContainer.addEventListener("click", handleKeyboardClick);
+        }
         window.addEventListener("keydown", handleKeyPress as unknown as EventListener);
         window.addEventListener("beforeunload",clearSessioStorage as unknown as EventListener);
 
         return () => {
             window.removeEventListener("keydown", handleKeyPress as unknown as EventListener);
-            // window.removeEventListener("click", handleKeyboardClick as unknown as EventListener);
-            // if (keyboardContainer) {
-            //     keyboardContainer.removeEventListener("click", handleKeyboardClick);
-            // }
+            if (keyboardContainer) {
+                keyboardContainer.removeEventListener("click", handleKeyboardClick);
+            }
         };
     }, []);
     const checkWordHandler= (word:string)=>{
@@ -266,8 +265,8 @@ function WordleGrid() {
             setStartGame(true);
             isGameStarted=true;
             setOnStart(true);
-            console.log(sessionStorage.getItem("answer"));
-            console.log(totalWords.length);
+            // console.log(sessionStorage.getItem("answer"));
+            // console.log(totalWords.length);
         
             return words[randomIndex];
             } catch (error) {
@@ -324,7 +323,7 @@ function WordleGrid() {
             <button className={"keyboard-button"}>l</button>
         </div>
         <div className={"third-row"}>
-            <button className={"w-20 font-extralight text-3xl border-2 border-gray-500"}>Del</button>
+            <button className={"keyboard-button"}>Del</button>
             <button className={"keyboard-button"}>z</button>
             <button className={"keyboard-button"}>x</button>
             <button className={"keyboard-button"}>c</button>
@@ -332,7 +331,7 @@ function WordleGrid() {
             <button className={"keyboard-button"}>b</button>
             <button className={"keyboard-button"}>n</button>
             <button className={"keyboard-button"}>m</button>
-            <button className={"w-28 font-extralight text-3xl border-2 border-gray-500"}>Enter</button>
+            <button className={"keyboard-button"}>Enter</button>
         </div>
     </div>
     </div>
