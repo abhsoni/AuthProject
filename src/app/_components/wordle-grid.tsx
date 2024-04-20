@@ -246,7 +246,7 @@ function WordleGrid() {
 
     const startGameHandler=async ()=>{
         try {
-            const response = await fetch('https://raw.githubusercontent.com/cymplecy/5letterWords/main/files/5letterWords.txt');
+            const response = await fetch('https://www-cs-faculty.stanford.edu/~knuth/sgb-words.txt');
             if (!response.ok) {
               throw new Error('Failed to fetch word list');
             }
